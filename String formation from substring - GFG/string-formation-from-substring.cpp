@@ -5,42 +5,51 @@ using namespace std;
 
  // } Driver Code Ends
 //User function template for C++
-class Solution{
+class Solution
+{
 public:	
 		
 	int isRepeat(string s)
 	{
-	   int n=s.size();
-	   for(int i=0;i<n;i++)
-	   {
-	       string subString=s.substr(0,i);
-	       int subSize=subString.size();
-	       if(n!=0 && subSize!=0 && n%subSize==0)
-	       {
-	           int count=0; 
-	           int checkSize=n/subSize;
-	           string test="";
-	           while(count<checkSize)
-	           {
-	               test+=subString;
-	               if(test==s)
-	               {
-	                   return 1;
-	                   
-	               }
-	               count++;
-	               
-	           }
-	           
-	       } // Your code goes here
-	       
-	   }
-	   return 0;
-	    
+	    vector<int>lps(s.size());
+	    compute_lps(lps,s);
+	    //ans will be the last part of array
+	    int ans = lps[s.size()-1];
+	    return(ans>0 && s.size() % (s.size()-ans) == 0);
 	}
-	   
-	    
-	};
+	void compute_lps(vector<int>&lps, string str)
+	{
+	    int i = 1;
+	    int len = 0;
+	    while(i<str.size())
+	    {
+	        if(str[i] == str[len])
+	        {
+	            len++;
+	            lps[i] = len;
+	            i++;
+	            
+	        }
+	        else
+	        {
+	            if(len == 0)
+	            {
+	                lps[i] = 0;
+	                i++;
+	                
+	            }
+	            else
+	            {
+	                len = lps[len-1];
+	                
+	            }
+	            
+	        }
+	        
+	    }
+	}
+	
+};
 
 // { Driver Code Starts.
 
