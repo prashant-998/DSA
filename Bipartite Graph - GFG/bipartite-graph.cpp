@@ -6,49 +6,79 @@ using namespace std;
 class Solution 
 {
 public:
-	bool bfs(int src, vector<char> &color, vector<int> adj[]) 
-	{
-        //pair -> node,color
-        queue<pair<int,char>> q;
+	bool DFSisBipartite(int node, vector<int> adj[], vector<bool> &visited, vector<int> &color)
+
+    {
+
+        visited[node] = true;
+
         
-        q.push({src,'r'});
-        color[src] = 'r';
-	    
-	    while(!q.empty()) 
-	    {
-	       int curNode = q.front().first;
-	       int curColor = q.front().second;
-	       q.pop();
-	       
-	       for(int x : adj[curNode]) 
-	       {
-	          if(color[x] == curColor)
-	            return false;
-	            
-	           if(color[x] == '0') {
-	               color[x] = (curColor == 'r') ? 'b' : 'r';
-	               q.push({x,color[x]});
-	           }
-	       }
-	    }
-	    return true;
+
+        for (auto nbr : adj[node])
+
+        {
+
+            if (!visited[nbr])
+
+            {
+
+                color[nbr] = !color[node];      //child ka color parent se alag hoga 
+
+                if (!DFSisBipartite(nbr, adj, visited, color))
+
+                    return false;
+
+            }
+
+            else
+
+            {
+
+                if (node != nbr && color[node] == color[nbr])       //agar baap aur bete ka color same he matlab Graph is not Bipartite 
+
+                    return false;
+
+            }
+
+        }
+
+        return true;
+
     }
+
     
-	bool isBipartite(int v, vector<int>adj[])
-	{
-	    
-	    vector<char> color(v+1,'0');
-	    
-	    for(int i = 0; i < v; i++) 
-	    {
-	        if(color[i] == '0') 
-	        {
-	            if(!bfs(i,color,adj))
-	                return false;
-	        }
-	    }
-	    return true;
-	}
+
+ 
+
+bool isBipartite(int V, vector<int>adj[]){
+
+   
+
+   vector<bool> visited(V , 0) ;   
+
+   vector<int> color(V , 0) ;      //ye node ka color store karega 
+
+   
+
+   for(int i=0 ; i<V ; i++)
+
+   {
+
+       if( !visited[i] )
+
+       {
+
+           if( !DFSisBipartite( i , adj , visited , color) ) 
+
+               return false ; 
+
+       }
+
+   }
+
+   return true ; 
+
+}
 };
 
 // { Driver Code Starts.
