@@ -7,7 +7,8 @@ using namespace std;
  // } Driver Code Ends
 // User function Template for C++
 
-class Solution{
+class Solution
+{
    char solve(int level, int pos)
    {
        if(level==1)
